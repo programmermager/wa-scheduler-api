@@ -42,10 +42,8 @@ class ScheduleController extends Controller
         foreach ($schedules as $schedule) {
             $sender = $schedule->sender;
 
-            // Kirim cURL ke API WhatsApp
-            $response = $this->sendWhatsAppMessage($sender->token, $schedule->recipient, $schedule->message);
+            $response = sendWhatsAppMessage($sender->token, $schedule->recipient, $schedule->message);
 
-            // Update status
             if ($response['success']) {
                 $schedule->status = 'sent';
             } else {
@@ -55,34 +53,5 @@ class ScheduleController extends Controller
         }
 
         return response()->json(['message' => 'Scheduler run completed']);
-    }
-
-    private function sendWhatsAppMessage($token, $recipient, $message)
-    {
-        $url = 'https://your-whatsapp-api.com/send-message'; // Ganti dengan URL API WA kamu
-
-        $payload = [
-            'to' => $recipient,
-            'message' => $message,
-        ];
-
-        $headers = [
-            "Authorization: Bearer $token",
-            "Content-Type: application/json",
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $result = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        return [
-            'success' => $httpCode === 200,
-            'response' => $result,
-        ];
     }
 }

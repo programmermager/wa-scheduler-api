@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sender;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +15,8 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
+            'phone' => 'required|min:10|numeric',
+            'fonnte_token' => 'required',
         ]);
 
         $user = User::create([
@@ -21,7 +24,18 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        return response()->json(['token' => $user->createToken('api-token')->plainTextToken]);
+        $sender = new Sender([
+            'number' => $request->phone,
+            'token' => $request->fonnte_token,
+        ]);
+        $user->senders->save($sender);
+        $token = $user->createToken('api-token')->plainTextToken;
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil Mendaftar',
+            'data' => $user,
+            'token' => $token
+        ]);
     }
 
     public function login(Request $request)

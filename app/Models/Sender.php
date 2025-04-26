@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Schema;
 
 class Sender extends Model
 {
+    protected $fillable = [
+        'number',
+        'token',
+    ];
 
     public function user()
     {
