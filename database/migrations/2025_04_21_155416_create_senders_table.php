@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('country_code');
-            $table->string('number');
+            $table->string('phone');
             $table->string('token');
             $table->timestamps();
             $table->softDeletes();

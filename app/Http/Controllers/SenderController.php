@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ExceptionHandler;
 use App\Models\Sender;
 use Illuminate\Http\Request;
 
@@ -9,17 +10,23 @@ class SenderController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
-            'number' => 'required',
-            'token' => 'required',
-        ]);
+        return ExceptionHandler::handle(function () use ($request) {
+            $request->validate([
+                'country_code' => 'required|numeric',
+                'phone' => 'required|numeric|min:10',
+                'fonnte_token' => 'required|string',
+            ]);
 
-        $sender = Sender::create([
-            'user_id' => $request->user()->id,
-            'number' => $request->number,
-            'token' => $request->token,
-        ]);
+            $user = auth()->user();
 
-        return response()->json($sender);
+            $sender = Sender::create([
+                'user_id' => $user->id,
+                'country_code' => $request->country_code,
+                'phone' => $request->phone,
+                'token' => $request->fonnte_token,
+            ]);
+
+            return response()->json($sender);
+        });
     }
 }

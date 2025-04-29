@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class Sender extends Model
 {
@@ -14,7 +12,9 @@ class Sender extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'number',
+        'user_id',
+        'country_code',
+        'phone',
         'token',
     ];
 
