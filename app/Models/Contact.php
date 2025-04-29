@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ContactModel extends Model
+class Contact extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'country_code',
-        'number',
+        'phone',
         'name',
         'user_id',
     ];
