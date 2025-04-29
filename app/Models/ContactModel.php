@@ -5,26 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
-class Sender extends Model
+class ContactModel extends Model
 {
-
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'country_code',
         'number',
-        'token',
+        'name',
+        'user_id',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function schedules()
-    {
-        return $this->hasMany(Schedule::class);
     }
 }

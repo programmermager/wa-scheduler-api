@@ -2,12 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Schedule extends Model
 {
+    use HasFactory, SoftDeletes;
+    protected $fillable = [
+        'sender_id',
+        'recipient',
+        'message',
+        'send_at',
+        'status'
+    ];
     public function user()
     {
         return $this->belongsTo(User::class);

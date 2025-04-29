@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('send_at');
             $table->enum('status', ['pending', 'sent', 'failed'])->default('pending');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
