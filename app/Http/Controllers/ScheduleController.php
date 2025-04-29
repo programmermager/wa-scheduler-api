@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ExceptionHandler;
 use App\Models\Schedule;
 use App\Models\Sender;
 use Illuminate\Http\Request;
@@ -9,6 +10,21 @@ use Illuminate\Support\Carbon;
 
 class ScheduleController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        return ExceptionHandler::handle(function () use ($request) {
+            $limit = $request->per_page ?? 10;
+            $messages = Schedule::orderBy('send_at', 'desc')->where('user_id', auth()->user()->id)->paginate($limit);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil mendapatkan data Pesan',
+                'data' => $messages,
+            ]);
+        });
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -19,7 +35,7 @@ class ScheduleController extends Controller
         ]);
 
         $schedule = Schedule::create([
-            'user_id' => $request->user()->id,
+            'user_id' => auth()->user()->id,
             'sender_id' => $request->sender_id,
             'recipient' => $request->recipient,
             'message' => $request->message,
@@ -27,7 +43,24 @@ class ScheduleController extends Controller
             'status' => 'pending',
         ]);
 
-        return response()->json($schedule);
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil menyimpan data Pesan',
+            'data' => $schedule,
+        ]);
+    }
+
+    public function destroy(string $id)
+    {
+        return ExceptionHandler::handle(function () use ($id) {
+            $msg = Schedule::findOrFail($id);
+            $msg->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil menghapus data Pesan',
+            ]);
+        });
     }
 
     public function runScheduler()

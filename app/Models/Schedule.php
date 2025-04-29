@@ -10,6 +10,7 @@ class Schedule extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
+        'user_id',
         'sender_id',
         'recipient',
         'message',

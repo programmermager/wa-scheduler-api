@@ -32,4 +32,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/sender/update/{id}', 'update');
         Route::delete('/sender/delete/{id}', 'destroy');
     });
+    Route::controller(ScheduleController::class)->group(function () {
+        Route::get('/message', 'index');
+        // Route::get('/message/{id}', 'show');
+        Route::post('/message/store', 'store');
+        // Route::post('/message/update/{id}', 'update');
+        Route::delete('/message/delete/{id}', 'destroy');
+    });
 });
