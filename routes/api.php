@@ -24,4 +24,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/contact/update/{id}', 'update');
         Route::delete('/contact/delete/{id}', 'destroy');
     });
+
+    Route::controller(SenderController::class)->group(function () {
+        Route::get('/sender', 'index');
+        Route::get('/sender/{id}', 'show');
+        Route::post('/sender/store', 'store');
+        Route::post('/sender/update/{id}', 'update');
+        Route::delete('/sender/delete/{id}', 'destroy');
+    });
 });

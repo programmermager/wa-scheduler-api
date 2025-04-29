@@ -15,7 +15,7 @@ class ContactController extends Controller
     {
         return ExceptionHandler::handle(function () use ($request) {
             $limit = $request->per_page ?? 10;
-            $contacts = Contact::orderBy('name', 'asc')->paginate($limit);
+            $contacts = Contact::orderBy('name', 'asc')->where('user_id', auth()->user()->id)->paginate($limit);
 
             return response()->json([
                 'status' => true,
